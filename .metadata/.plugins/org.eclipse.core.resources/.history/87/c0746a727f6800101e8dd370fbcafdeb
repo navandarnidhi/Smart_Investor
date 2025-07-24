@@ -1,0 +1,5 @@
+package com.brokingapp.service;
+
+public class AuthService {
+
+}
