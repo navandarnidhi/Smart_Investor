@@ -21,4 +21,14 @@ public class TradingController {
     public List<Order> getOrders(@PathVariable Long userId) {
         return tradingService.getOrders(userId);
     }
+
+    @PutMapping("/order/{orderId}")
+    public Order modifyOrder(@PathVariable Long orderId, @RequestBody Order updatedOrder) {
+        return tradingService.modifyOrder(orderId, updatedOrder);
+    }
+
+    @DeleteMapping("/order/{orderId}")
+    public Order cancelOrder(@PathVariable Long orderId) {
+        return tradingService.cancelOrder(orderId);
+    }
 } 

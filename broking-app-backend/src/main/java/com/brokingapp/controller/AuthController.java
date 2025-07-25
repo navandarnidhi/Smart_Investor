@@ -1,6 +1,7 @@
 package com.brokingapp.controller;
 
 import com.brokingapp.model.LoginRequest;
+import com.brokingapp.model.OtpRequest;
 import com.brokingapp.model.User;
 import com.brokingapp.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,33 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/verify-otp")
+    public ResponseEntity<?> verifyOtp(@RequestBody OtpRequest request) {
+        boolean verified = authService.verifyOtp(request.getEmail(), request.getOtp());
+        if (verified) {
+            return ResponseEntity.ok("Email verified successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid or expired OTP.");
+        }
+    }
+
+    @PostMapping("/login-otp-request")
+    public ResponseEntity<?> requestLoginOtp(@RequestBody OtpRequest request) {
+        try {
+            authService.sendLoginOtp(request.getEmail());
+            return ResponseEntity.ok("OTP sent to email if registered and verified.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login-otp")
+    public ResponseEntity<?> loginWithOtp(@RequestBody OtpRequest request) {
+        try {
+            String token = authService.loginWithOtp(request.getEmail(), request.getOtp());
+            return ResponseEntity.ok("Bearer " + token);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

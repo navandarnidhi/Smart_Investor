@@ -13,8 +13,8 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("/users")
-    public String getAllUsers() {
-        return adminService.manageUsers();
+    public List<com.brokingapp.model.User> getAllUsers() {
+        return adminService.getAllUsers();
     }
 
     @PostMapping("/kyc/approve/{userId}")
@@ -22,9 +22,24 @@ public class AdminController {
         return adminService.approveKyc(userId);
     }
 
+    @PostMapping("/kyc/reject/{userId}")
+    public String rejectKyc(@PathVariable Long userId) {
+        return adminService.rejectKyc(userId);
+    }
+
     @GetMapping("/dashboard")
-    public String getReportingDashboard() {
+    public java.util.Map<String, Object> getReportingDashboard() {
         return adminService.getReportingDashboard();
+    }
+
+    @GetMapping("/orders")
+    public List<com.brokingapp.model.Order> getAllOrders() {
+        return adminService.getAllOrders();
+    }
+
+    @GetMapping("/funds")
+    public List<com.brokingapp.model.FundTransaction> getAllFundTransactions() {
+        return adminService.getAllFundTransactions();
     }
 
     @GetMapping("/actions/{adminId}")

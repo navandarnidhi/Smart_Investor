@@ -21,4 +21,28 @@ public class TradingService {
     public List<Order> getOrders(Long userId) {
         return orderRepository.findByUserId(userId);
     }
+
+    public Order modifyOrder(Long orderId, Order updatedOrder) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        if (!"PENDING".equals(order.getStatus())) {
+            throw new RuntimeException("Only pending orders can be modified");
+        }
+        // Allow updating quantity, price, orderType, symbol
+        order.setQuantity(updatedOrder.getQuantity());
+        order.setPrice(updatedOrder.getPrice());
+        order.setOrderType(updatedOrder.getOrderType());
+        order.setSymbol(updatedOrder.getSymbol());
+        return orderRepository.save(order);
+    }
+
+    public Order cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        if (!"PENDING".equals(order.getStatus())) {
+            throw new RuntimeException("Only pending orders can be cancelled");
+        }
+        order.setStatus("CANCELLED");
+        return orderRepository.save(order);
+    }
 } 

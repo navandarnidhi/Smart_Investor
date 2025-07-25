@@ -26,4 +26,9 @@ public class User {
     private String role = "USER"; // default role
 
     private boolean kycCompleted = false;
+
+    // OTP and email verification fields
+    private boolean isVerified = false;
+    private String otp;
+    private java.time.LocalDateTime otpExpiry;
 }
