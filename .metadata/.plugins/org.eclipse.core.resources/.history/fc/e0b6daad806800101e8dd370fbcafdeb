@@ -1,5 +1,0 @@
-package com.brokingapp.model;
-
-public class LoginRequest {
-
-}

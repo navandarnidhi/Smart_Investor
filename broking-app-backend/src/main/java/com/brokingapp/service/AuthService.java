@@ -64,17 +64,22 @@ public class AuthService implements UserDetailsService {
     public String loginUser(String email, String password) {
         Optional<User> optionalUser = userRepo.findByEmail(email);
         if (optionalUser.isEmpty()) {
-            throw new RuntimeException("Invalid email");
+            throw new RuntimeException("Invalid email"); // Case 1
         }
+
         User user = optionalUser.get();
+
         if (!user.isVerified()) {
-            throw new RuntimeException("Email not verified. Please verify your email with OTP.");
+            throw new RuntimeException("Email not verified. Please verify your email with OTP."); // Case 2
         }
+
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new RuntimeException("Invalid password"); // Case 3
         }
+
         return jwtUtils.generateToken(user.getEmail());
     }
+
 
     public void sendLoginOtp(String email) {
         Optional<User> optionalUser = userRepo.findByEmail(email);
